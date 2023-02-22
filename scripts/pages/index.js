@@ -3,15 +3,15 @@ function displayData(photographers) {
 
     photographers.forEach((photographer) => {
         const photographerModel = photographerFactory(photographer);
-        const userCardDOM = photographerModel.getUserCardDOM();
-        photographersSection.appendChild(userCardDOM);
+        const userCardHTML = photographerModel.getUserCardHTML();
+        photographersSection.insertAdjacentHTML("beforeend", userCardHTML);
     });
 }
 
 async function init() {
     // Récupère les datas des photographes
     const {photographers} = await getPhotographers();
-    await displayData(photographers);
+    displayData(photographers);
 }
 
 init();
