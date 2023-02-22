@@ -1,10 +1,26 @@
 @import url("photographer.css");
+@import url("media.css");
+
+html {
+    /* Set border-box as the global default */
+    -moz-box-sizing: border-box; /* Legacy */
+    -webkit-box-sizing: border-box; /* Legacy */
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    /* Allow each element to override */
+    -moz-box-sizing: inherit; /* Legacy */
+    -webkit-box-sizing: inherit; /* Legacy */
+    box-sizing: inherit;
+}
 
 body {
     font-family: "DM Sans", sans-serif;
-    margin: 0;
+    max-width: 1440px;
+    margin: auto;
+    /*margin: 0;*/
 }
-
 
 .page-header {
     display: flex;
@@ -26,61 +42,20 @@ body {
     margin-left: 100px;
 }
 
-.photographer_section {
+.photographer-section {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 70px;
     margin-top: 100px;
 }
 
-.photographer-card {
-    justify-self: center;
-    display: flex;
-    justify-content: center;
+.photographer-header {
+    display: grid;
+    grid-template-columns: 1fr max-content 1fr;
+    column-gap: 60px;
     align-items: center;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.photographer-card__name {
-    color: #D3573C;
-    font-size: 36px;
-    font-weight: 400;
-    margin: 15px 0 0 0;
-}
-
-/*.photographer-card__image-container {*/
-/*    height: 200px;*/
-/*    width: 200px;*/
-/*    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);*/
-/*    border-radius: 50%;*/
-/*    overflow: hidden;*/
-/*}*/
-
-.photographer-card__profile-picture {
-    height: 200px;
-    width: 200px;
-    /*height: 100%;*/
-    /*width: 100%;*/
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-    background: #C4C4C4;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.photographer-card__location {
-    font-size: 13px;
-    color: #901C1C;
-    margin: 0;
-}
-
-.photographer-card__tagline {
-    font-size: 10px;
-    margin: 0;
-}
-
-.photographer-card__price {
-    font-size: 9px;
-    color: #757575;
-    margin: 0;
+    background: #FAFAFA;
+    border-radius: 5px;
+    padding: 50px 40px;
+    margin: 20px 100px;
 }

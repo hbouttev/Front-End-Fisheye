@@ -1,14 +1,98 @@
-#contact_modal {
-    display: none;
+.photographer-card {
+    justify-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2px;
 }
 
-.photograph-header {
-    background-color: #FAFAFA;
-    height: 300px;
-    margin: 0 100px;
+.photographer-card__link {
+    justify-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 18px;
+    text-decoration: none;
 }
 
-.contact_button {
+.photographer-header__profile {
+    display: flex;
+    flex-direction: column;
+}
+
+.photographer-header__contact {
+    display: flex;
+    justify-content: center;
+}
+
+.photographer-header__profile-picture {
+    display: flex;
+    justify-content: right;
+}
+
+.photographer-name {
+    color: #D3573C;
+    font-size: 64px;
+    font-weight: 400;
+    margin: 0;
+}
+
+.photographer-name--card {
+    font-size: 36px;
+    margin: 0;
+}
+
+.photographer-profile-picture {
+    height: 200px;
+    width: 200px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    background: #C4C4C4;
+    border-radius: 50%;
+    object-fit: cover;
+    overflow: clip;
+    overflow-clip-margin: unset; /* Fix pixelated images on Chrome */
+}
+
+.photographer-profile-picture--card {
+
+}
+
+.photographer-location {
+    color: #901C1C;
+    font-size: 24px;
+    font-weight: 400;
+    margin: 0;
+}
+
+.photographer-location--card {
+    font-size: 13px;
+    margin: 0;
+}
+
+.photographer-tagline {
+    font-size: 18px;
+    font-weight: 400;
+    margin: 20px 0 0 0;
+}
+
+.photographer-tagline--card {
+    font-size: 10px;
+    margin: 0;
+}
+
+.photographer-price {
+
+}
+
+.photographer-price--card {
+    font-size: 9px;
+    color: #757575;
+    margin: 0;
+}
+
+.contact-button {
     font-size: 20px;
     font-weight: bold;
     color: white;
@@ -21,21 +105,87 @@
     cursor: pointer;
 }
 
+.fixed-box {
+    /* TODO: STICKY DOESN'T work if a user have few or no media (won't be at the bottom) and glitch while loading media
+       user fixed again, with tricks transform ?
+     */
+    position: sticky;
+    bottom: 0;
+    float: right;
+    background: #DB8876;
+    border-top-left-radius: 5PX;
+    border-top-right-radius: 5PX;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    z-index: 1;
+    font-weight: 500;
+    font-size: 24px;
+    transform: translateX(-36px);
+    padding: 16px 32px;
+}
+
+.fixed-box__total-likes {
+
+}
+
+.fixed-box__daily-rate {
+
+}
+
+.photographer-total-likes {
+    margin: 0;
+}
+
+.photographer-price {
+    margin: 0;
+}
+
+#contact-modal {
+    padding: 0;
+    border: none;
+    background: transparent;
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    max-width: 100%; /* dialog:modal element override */
+    max-height: 100%;
+}
+
+#contact-modal::backdrop {
+    background-color: rgba(196, 196, 196, 0.4);
+}
+
 .modal {
     border-radius: 5px;
     background-color: #DB8876;
-    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 35px;
-    margin: auto;
+    padding: 15px 35px 35px;
+    gap: 20px;
+    animation-name: modalOpen;
+    animation-duration: 0.3s;
+    max-width: 650px;
+    margin: 50px auto;
+}
+
+@keyframes modalOpen {
+    from {
+        opacity: 0;
+        transform: translateY(-150px);
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 .modal header {
+    display: flex;
     justify-content: space-between;
     width: 100%;
+    align-items: baseline;
 }
 
 .modal header img {
@@ -45,22 +195,17 @@
 .modal header h2 {
     font-size: 64px;
     font-weight: normal;
-    text-align: center;
+    margin: 0;
 }
 
-form {
+.modal__contact-form {
     display: flex;
     width: 100%;
     flex-direction: column;
     align-items: flex-start;
 }
 
-form label {
-    color: #312E2E;
-    font-size: 36px;
-}
-
-form div {
+.form-section {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -68,9 +213,43 @@ form div {
     margin-bottom: 26px;
 }
 
-form input {
+.form-section__label {
+    color: #312E2E;
+    font-size: 36px;
+}
+
+.form-section__input {
     width: 100%;
+    min-width: 100%;
+    max-width: 100%; /* prevent textarea width resizing */
     height: 68px;
     border: none;
     border-radius: 5px;
+    font-size: 28px;
+    padding: 10px;
+    font-family: inherit;
+}
+
+.form-section__input--textarea {
+    height: 170px;
+    resize: none;
+}
+
+.form-section[data-error]::after {
+    content: attr(data-error);
+    font-size: 0.9rem;
+    color: #e01e31;
+    display: block;
+    margin-top: 7px;
+    margin-bottom: 7px;
+    line-height: 0.3;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.form-section[data-error-visible="true"]::after {
+    opacity: 1;
+}
+.form-section[data-error-visible="true"] .form-section__input {
+    border: 2px solid #e01e31;
 }
