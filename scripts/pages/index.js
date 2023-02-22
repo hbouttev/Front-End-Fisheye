@@ -1,13 +1,5 @@
-async function getPhotographers() {
-    return await fetch("../../data/photographers.json").then((response) => {
-        return response.json();
-    }).then((data) => {
-        return data;
-    });
-}
-
-async function displayData(photographers) {
-    const photographersSection = document.querySelector(".photographer_section");
+function displayData(photographers) {
+    const photographersSection = document.querySelector(".photographer-section");
 
     photographers.forEach((photographer) => {
         const photographerModel = photographerFactory(photographer);
