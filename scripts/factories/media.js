@@ -1,7 +1,35 @@
 function mediaFactory(data) {
-    const {id, photographerId, title, image, video, likes, date, price} = data;
+    const { id, photographerId, title, image, video, date, price } = data;
+    let { likes } = data;
+
+    let liked = false;
 
     const mediaUrl = `assets/media/${photographerId}/${!!image ? image : video}`;
+
+    function getLikes() {
+        return likes;
+    }
+
+    function incrementLikes() {
+        likes += 1;
+    }
+
+    function decrementLikes() {
+        likes -= 1;
+    }
+
+    function isLiked() {
+        return liked;
+    }
+
+    function toggleLiked() {
+        if (liked) {
+            decrementLikes();
+        } else {
+            incrementLikes();
+        }
+        liked = !liked;
+    }
 
     const getMediaCardHTML = () => (`
         <article class="media-card" id="${id}">
@@ -16,5 +44,18 @@ function mediaFactory(data) {
         </article>
     `);
 
-    return {id, photographerId, title, image, video, likes, date, price, getMediaCardHTML};
+    return {
+        id,
+        photographerId,
+        title,
+        image,
+        video,
+        likes,
+        date,
+        price,
+        getMediaCardHTML,
+        getLikes,
+        isLiked,
+        toggleLiked
+    };
 }
