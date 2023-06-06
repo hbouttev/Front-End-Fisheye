@@ -1,0 +1,160 @@
+.media-sort__label {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.media-sort__select {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #911C1C;
+    background: #FAFAFA;
+    color: #911C1C;
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.combo {
+    display: block;
+    position: relative;
+}
+
+.combo-input {
+    background-color: #911C1C;
+    color: #fff;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 700;
+    height: 70px;
+    padding: 12px 16px 14px;
+    text-align: left;
+    width: 160px;
+    cursor: pointer;
+}
+
+.combo-input::after {
+    border-bottom: 3px solid #fff;
+    border-right: 3px solid #fff;
+    content: "";
+    display: block;
+    height: 12px;
+    pointer-events: none;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translate(0, -80%) rotate(45deg);
+    transition: transform 0.15s ease-in-out;
+    width: 12px;
+    z-index: 101;
+}
+
+.combo-input:focus {
+    background-color: #DB8876;
+    color: black;
+}
+
+.combo-input:focus::after {
+    border-bottom-color: black;
+    border-right-color: black;
+}
+
+.open .combo-input::after {
+    transform: translate(0, -40%) rotate(225deg);
+}
+
+.combo-input:focus::after {
+    border-bottom-color: white;
+    border-right-color: white;
+}
+
+.combo-label {
+    display: block;
+    font-size: 20px;
+    font-weight: 100;
+}
+
+.combo-menu {
+    background-color: #911C1C;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 5px;
+    display: none;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    box-shadow: 0 3px 3px 0 #666;
+    z-index: 100;
+}
+
+.open .combo-menu {
+    display: block;
+}
+
+.combo-option {
+    padding: 14px 16px;
+    cursor: pointer;
+    position: relative;
+}
+
+.combo-option:first-child {
+    padding-top: 22px;
+    border-radius: 5px 5px 0 0;
+}
+
+.combo-option:last-child {
+    padding-bottom: 22px;
+    border-radius: 0 0 5px 5px;
+}
+
+.combo-option.option-current {
+    /*background-color: rgb(255 255 255 / 20%);*/
+    /*text-decoration: underline;*/
+}
+
+.combo-option.option-current::after {
+    content: "";
+    display: block;
+    height: 20px;
+    width: 3px;
+    /* border-radius: 50%; */
+    pointer-events: none;
+    position: absolute;
+    /* right: 16px; */
+    left: 8px;
+    bottom: 16px;
+    background-color: white;
+}
+
+.combo-option:last-child::after {
+    bottom: unset;
+    top: 16px;
+}
+
+.combo-option:hover,
+.combo-option:focus     {
+    background-color: #DB8876;
+    color: black;
+}
+
+.combo-option:first-child {
+    padding-right: 30px;
+}
+
+.combo-option::before {
+    content: "";
+    display: block;
+    background-color: #fff;
+    height: 1px;
+    top: 0;
+    left: 10px;
+    right: 10px;
+    position: absolute;
+}
+
+.combo-option:first-child::before {
+    display: none;
+}
