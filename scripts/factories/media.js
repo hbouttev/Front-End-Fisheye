@@ -4,7 +4,7 @@ function mediaFactory(data) {
 
     let liked = false;
 
-    const mediaUrl = `assets/media/${photographerId}/${!!image ? image : video}`;
+    const mediaUrl = `assets/media/${photographerId}/${image || video}`;
 
     function getLikes() {
         return likes;
@@ -31,15 +31,21 @@ function mediaFactory(data) {
         liked = !liked;
     }
 
+    const getMediaElementHTML = ({controls = true} = {}) => (`
+        <${image ? 'img' : 'video'} class="media-content" src=${mediaUrl} alt=${title} ${video && controls ? 'controls' : ''}>
+        ${video ? '</video>' : ''}
+    `);
+
     const getMediaCardHTML = () => (`
-        <article class="media-card" id="${id}">
-            <a href="#" class="media-card__link">
-                <${!!image ? 'img' : 'video'} class="media-thumbnail" src=${mediaUrl} alt="">
-                ${!!video ? '</video>' : ''}
-            </a>
+        <article class="media-card" data-media-id="${id}">
+            <div class="media-card__media" role="link" aria-label="${title}, closeup view" tabindex="0">
+                ${getMediaElementHTML({controls: false})}
+            </div>
             <div class="media-card__info">
                 <h2 class="media-title">${title}</h2>
-                <p class="media-likes">${likes} <i class="fa-solid fa-heart media-likes__icon"></i></p>
+                <p class="media-likes">
+                    <span class="media-likes__count" aria-label="${likes} likes">${likes}</span> <i class="fa-solid fa-heart media-likes__icon"></i>
+                </p>
             </div>
         </article>
     `);
@@ -50,9 +56,9 @@ function mediaFactory(data) {
         title,
         image,
         video,
-        likes,
         date,
         price,
+        getMediaElementHTML,
         getMediaCardHTML,
         getLikes,
         isLiked,
