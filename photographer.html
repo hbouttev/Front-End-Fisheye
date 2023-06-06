@@ -9,22 +9,19 @@
     <title>Fisheye - photographe </title>
 </head>
 <body>
-<header class="page-header">
-    <a href="index.html" class="page-header__link"><img src="assets/images/logo.png" class="logo"
-                                                        alt="Fisheye Home page"/></a>
+<header class="page-header" role="banner">
+    <a href="index.html" class="page-header__link" tabindex="0">
+        <img src="assets/images/logo.png" class="logo" alt="Fisheye Home page"/>
+    </a>
 </header>
 <main id="main">
     <header class="photographer-header"></header>
-    <div class="photographer-media"></div>
+    <section class="photographer-media" aria-label="My pictures and videos">
+        <div class="photographer-media__sort" aria-label="Sort pictures"></div>
+        <div class="photographer-media__media-cards"></div>
+    </section>
 </main>
-<div class="fixed-box">
-    <div class="fixed-box__total-likes">
-        <p class="photographer-total-likes">
-            <span id="total-likes"></span> <i class="fa-solid fa-heart media-likes__icon"></i>
-        </p>
-    </div>
-    <div class="fixed-box__price"></div>
-</div>
+<section class="fixed-box"></section>
 <script src="scripts/utils/api.js"></script>
 <script src="scripts/factories/photographer.js"></script>
 <script src="scripts/factories/media.js"></script>
