@@ -1,17 +1,3 @@
-function openModal(modal) {
-    // const modal = document.getElementById("contact-modal");
-	// modal.style.display = "block";
-    document.body.style.overflow = 'hidden';
-    modal.showModal();
-}
-
-function closeModal(modal) {
-    // const modal = document.getElementById("contact-modal");
-    // modal.style.display = "none";
-    document.body.style.overflow = '';
-    modal.close();
-}
-
 // types of errors and associated messages for each form control
 const FORM_ERRORS = {
     firstName: {
