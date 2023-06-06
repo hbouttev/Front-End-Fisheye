@@ -1,16 +1,16 @@
 function displayData(photographers) {
-    const photographersSection = document.querySelector(".photographer-section");
+    const photographersSection = document.querySelector('.photographer-section');
 
     photographers.forEach((photographer) => {
         const photographerModel = photographerFactory(photographer);
         const userCardHTML = photographerModel.getUserCardHTML();
-        photographersSection.insertAdjacentHTML("beforeend", userCardHTML);
+        photographersSection.insertAdjacentHTML('beforeend', userCardHTML);
     });
 }
 
 async function init() {
     // Récupère les datas des photographes
-    const {photographers} = await getPhotographers();
+    const { photographers } = await getPhotographers();
     displayData(photographers);
 }
 

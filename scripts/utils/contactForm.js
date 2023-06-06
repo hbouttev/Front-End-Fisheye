@@ -15,32 +15,32 @@ function closeModal(modal) {
 // types of errors and associated messages for each form control
 const FORM_ERRORS = {
     firstName: {
-        empty: "Votre prénom est requis.",
-        too_short: "Veuillez entrer 2 caractères ou plus pour le prénom.",
-        invalid: "Veuillez entrer un prénom valide."
+        empty: 'Votre prénom est requis.',
+        too_short: 'Veuillez entrer 2 caractères ou plus pour le prénom.',
+        invalid: 'Veuillez entrer un prénom valide.'
     },
     lastName: {
-        empty: "Votre nom est requis.",
-        too_short: "Veuillez entrer 2 caractères ou plus pour le nom.",
-        invalid: "Veuillez entrer un nom valide."
+        empty: 'Votre nom est requis.',
+        too_short: 'Veuillez entrer 2 caractères ou plus pour le nom.',
+        invalid: 'Veuillez entrer un nom valide.'
     },
     email: {
-        empty: "Une adresse mail est requise.",
-        invalid: "Veuillez entrer une adresse email valide."
+        empty: 'Une adresse mail est requise.',
+        invalid: 'Veuillez entrer une adresse email valide.'
     },
     message: {
-        empty: "Votre message est requis."
+        empty: 'Votre message est requis.'
     }
 };
 
 function initForm() {
-    const contactForm = document.forms.namedItem("contact-photographer");
+    const contactForm = document.forms.namedItem('contact-photographer');
 
-    contactForm.addEventListener("submit", validateForm);
+    contactForm.addEventListener('submit', validateForm);
 
     // validate form controls when input is changed
-    ["firstName", "lastName"].forEach(formControlName => {
-        contactForm.elements.namedItem(formControlName).addEventListener("change", (event) => {
+    ['firstName', 'lastName'].forEach(formControlName => {
+        contactForm.elements.namedItem(formControlName).addEventListener('change', (event) => {
             event.preventDefault();
             resetFormControlError(event.target);
             if (!validateName(event.target)) {
@@ -50,7 +50,7 @@ function initForm() {
         });
     });
 
-    contactForm.elements.namedItem("email").addEventListener("change", (event) => {
+    contactForm.elements.namedItem('email').addEventListener('change', (event) => {
         event.preventDefault();
         resetFormControlError(event.target);
         if (!validateMail(event.target)) {
@@ -59,7 +59,7 @@ function initForm() {
         }
     });
 
-    contactForm.elements.namedItem("message").addEventListener("change", (event) => {
+    contactForm.elements.namedItem('message').addEventListener('change', (event) => {
         event.preventDefault();
         resetFormControlError(event.target);
         if (!validateMessage(event.target)) {
@@ -77,9 +77,9 @@ function initForm() {
 function resetFormControlError(formControl) {
     if (formControl.validity.customError) {
         // needed for validity.valid to be true
-        formControl.setCustomValidity("");
+        formControl.setCustomValidity('');
         // hide previously displayed error message without removing it
-        formControl.parentElement.removeAttribute("data-error-visible");
+        formControl.parentElement.removeAttribute('data-error-visible');
     }
 }
 
@@ -95,16 +95,16 @@ function setFormControlErrorMessage(formControl, errorName) {
  * Copy a form control error message to its form data error element for displaying.
  */
 function setElementFormDataErrorMessage(formControl) {
-    formControl.parentElement.setAttribute("data-error", formControl.validationMessage);
-    formControl.parentElement.setAttribute("data-error-visible", "false");
+    formControl.parentElement.setAttribute('data-error', formControl.validationMessage);
+    formControl.parentElement.setAttribute('data-error-visible', "false");
 }
 
 /**
  * Display previously set and hidden errors messages in the form.
  */
 function displayFormErrorsMessages(form) {
-    form.querySelectorAll(":scope > .form-section[data-error-visible=false]").forEach((formDataError) => {
-        formDataError.setAttribute("data-error-visible", "true");
+    form.querySelectorAll(':scope > .form-section[data-error-visible=false]').forEach((formDataError) => {
+        formDataError.setAttribute('data-error-visible', 'true');
     });
 }
 
@@ -112,7 +112,7 @@ function displayFormErrorsMessages(form) {
  * Display previously set and hidden error message for a form control.
  */
 function displayFormControlErrorMessage(formControl) {
-    formControl.parentElement.setAttribute("data-error-visible", "true");
+    formControl.parentElement.setAttribute('data-error-visible', 'true');
 }
 
 /**
@@ -121,7 +121,7 @@ function displayFormControlErrorMessage(formControl) {
 function validateRequiredFormControl(formControl) {
     // check if the element has a required attribute and is empty
     if (formControl.validity.valueMissing) {
-        setFormControlErrorMessage(formControl, "empty")
+        setFormControlErrorMessage(formControl, 'empty')
         return false;
     }
     return true;
@@ -135,10 +135,10 @@ function validateName(formControl) {
     if (isEmpty) {
         return false;
     } else if (formControl.validity.tooShort) {
-        setFormControlErrorMessage(formControl, "too_short")
+        setFormControlErrorMessage(formControl, 'too_short')
         return false;
     } else if (formControl.validity.patternMismatch) {
-        setFormControlErrorMessage(formControl, "invalid")
+        setFormControlErrorMessage(formControl, 'invalid')
         return false;
     }
     return true;
@@ -167,9 +167,9 @@ function validateMessage(formControl) {
 }
 
 function displayConfirmationMessage(formControlsCollection) {
-    console.log("Formulaire validé.");
+    console.log('Formulaire validé.');
     for (const formControl of formControlsCollection) {
-        if (formControl.type !== "submit") {
+        if (formControl.type !== 'submit') {
             console.log(`${formControl.name} : ${formControl.value}`);
         }
     }
@@ -194,14 +194,14 @@ function validateForm(event) {
             isFormValid = false;
 
             switch (formControl.name) {
-                case "firstName":
-                case "lastName":
+                case 'firstName':
+                case 'lastName':
                     validateName(formControl);
                     break;
-                case "email":
+                case 'email':
                     validateMail(formControl);
                     break;
-                case "message":
+                case 'message':
                     validateMessage(formControl);
                     break;
             }

@@ -5,7 +5,7 @@ async function getPhotographers() {
     if (cachedPhotographers !== null) {
         return cachedPhotographers;
     }
-    return await fetch("../../data/photographers.json").then((response) => {
+    return await fetch('../../data/photographers.json').then((response) => {
         return response.json();
     }).then((data) => {
         cachedPhotographers = data;
