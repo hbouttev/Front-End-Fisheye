@@ -1,107 +1,120 @@
 function getURLPhotographerID() {
-    return parseInt(new URLSearchParams(window.location.search).get("id"));
+    return parseInt(new URLSearchParams(window.location.search).get('id'));
 }
 
-function getPhotographerById(photographers, id) {
-    return photographers.find(photographer => photographer.id === id);
+async function displayPhotographerData(photographer) {
+    const photographerHeader = document.querySelector('.photographer-header');
+    const photographerHeaderHTML = photographer.getUserPageHeaderHTML();
+    photographerHeader.insertAdjacentHTML('beforeend', photographerHeaderHTML);
+
+    const photographerInsertDetails = document.querySelector('.fixed-box');
+    const photographerInsertDetailsHTML = await photographer.getUserInsertDetailsHTML();
+    photographerInsertDetails.insertAdjacentHTML('beforeend', photographerInsertDetailsHTML);
 }
 
-function getMediaByPhotographerId(media, id) {
-    return media.filter(media => media.photographerId === id);
-}
+function displayPhotographerMedia(mediaList, photographer) {
+    const mediaSortContainer = document.querySelector('.photographer-media__sort');
+    const mediaSortSelectHTML = getMediaSortSelectHTML();
+    mediaSortContainer.insertAdjacentHTML('beforeend', mediaSortSelectHTML);
+    initMediaSortSelect(mediaList);
 
-// TODO: METTRE TOTALLIKES et getTotalLikes ? dans la factory media
-function getTotalLikesFromMedia(media) {
-    return media.reduce((total, media) => total + media.likes, 0);
-}
-
-function displayPhotographerData(photographer) {
-    const photographerModel = photographerFactory(photographer);
-    localData.photographer = photographerModel;
-    const photographerHeader = document.querySelector(".photographer-header");
-    const photographerHeaderHTML = photographerModel.getUserPageHeaderHTML();
-    photographerHeader.insertAdjacentHTML("beforeend", photographerHeaderHTML);
-
-    const photographerDailyRate = document.querySelector(".fixed-box__price");
-    const photographerDailyRateHTML = photographerModel.getUserDailyRateHTML();
-    photographerDailyRate.insertAdjacentHTML("beforeend", photographerDailyRateHTML);
-}
-
-function displayPhotographerMedia(media) {
-    const photographerMedia = document.querySelector(".photographer-media");
-    media.forEach((media) => {
-        const mediaModel = mediaFactory(media);
-        const mediaCardHTML = mediaModel.getMediaCardHTML();
-        photographerMedia.insertAdjacentHTML("beforeend", mediaCardHTML);
+    const photographerMedia = document.querySelector('.photographer-media__media-cards');
+    mediaList.forEach((media) => {
+        const mediaCardHTML = media.getMediaCardHTML();
+        photographerMedia.insertAdjacentHTML('beforeend', mediaCardHTML);
+        const mediaContentElement = document.querySelector(`[data-media-id="${media.id}"] .media-card__media`);
+        mediaContentElement.addEventListener('click', () => displayLightbox(media, mediaList));
+        mediaContentElement.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') displayLightbox(media, mediaList);
+        });
+        const mediaLikesButtonElement = document.querySelector(`[data-media-id="${media.id}"] .media-likes__icon`);
+        const handleClickLikes = async () => {
+            media.toggleLiked();
+            if (media.isLiked()) {
+                await photographer.incrementTotalLikes()
+                mediaLikesButtonElement.classList.add('media-likes__icon--liked');
+            } else {
+                await photographer.decrementTotalLikes()
+                mediaLikesButtonElement.classList.remove('media-likes__icon--liked');
+            }
+            const mediaLikesElement = document.querySelector(`[data-media-id="${media.id}"] .media-likes__count`);
+            mediaLikesElement.textContent = media.getLikes();
+            const photographerTotalLikesElement = document.querySelector('.photographer-total-likes .total-likes');
+            photographerTotalLikesElement.textContent = await photographer.getTotalLikes();
+        }
+        mediaLikesButtonElement.addEventListener('click', handleClickLikes);
+        mediaLikesButtonElement.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') handleClickLikes();
+        });
     });
 }
 
-function displayPhotographerTotalLikes(totalLikes) {
-    const photographerTotalLikes = document.querySelector("#total-likes");
-    photographerTotalLikes.textContent = totalLikes;
+function renderSortedMedia(mediaList) {
+    const fragment = document.createDocumentFragment();
+    const mediaCardsContainer = document.querySelector('.photographer-media__media-cards');
+    const mediaCards = mediaCardsContainer.querySelectorAll('.media-card');
+    const mediaSortedIndexMap = new Map();
+    // To have a constant sort O(n) complexity and avoid using indexOf, we store the id and index of each
+    // media from the already sorted mediaList in a map as key and value to sort the DOM mediaCards
+    mediaList.forEach(({id}, index) => {
+        mediaSortedIndexMap.set(id, index);
+    });
+    const sortedMediaCards = Array.from(mediaCards).sort((a, b) => {
+        return mediaSortedIndexMap.get(parseInt(a.dataset.mediaId)) - mediaSortedIndexMap.get(parseInt(b.dataset.mediaId));
+    });
+    sortedMediaCards.forEach((mediaCard) => {
+        fragment.appendChild(mediaCard);
+    });
+    mediaCardsContainer.appendChild(fragment);
 }
 
 function displayModal(photographer) {
-    const modal = document.getElementById("contact-modal");
-    if (!!modal) {
+    const modal = document.getElementById('contact-modal');
+    if (modal !== null) {
         openModal(modal);
     } else {
-        const pageMain = document.getElementById("main");
+        const pageMain = document.getElementById('main');
         const photographerContactModalHTML = photographer.getUserContactModalHTML();
-        pageMain.insertAdjacentHTML("afterend", photographerContactModalHTML);
-        const newModal = document.getElementById("contact-modal");
-        const modalCloseButton = document.querySelector("#contact-modal header img");
-        modalCloseButton.addEventListener("click", () => closeModal(newModal));
+        pageMain.insertAdjacentHTML('afterend', photographerContactModalHTML);
+        const newModal = document.getElementById('contact-modal');
+        const modalCloseButton = document.querySelector('#contact-modal header img');
+        modalCloseButton.addEventListener('click', () => closeModal(newModal));
+        modalCloseButton.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') closeModal(newModal);
+        });
         openModal(newModal);
         initForm();
     }
 }
 
-async function init() {
-    const photographerID = getURLPhotographerID();
-    const {photographers, media} = await getPhotographers();
-    const photographer = getPhotographerById(photographers, photographerID);
-    const photographerMedia = getMediaByPhotographerId(media, photographerID);
-    displayPhotographerData(photographer);
-    // TODO
-    // SORT MEDIA IN ARRAY BEFORE SEND TO DISPLAY
-    // MIEUX ? : récupérer tous les mediaModel avec la factory, les stocker dans un tableau, puis les trier et envoyer
-    // à fonction affichage qui parcours et appelle la méthode getMediaCardHTML() de chaque mediaModel (évite de
-    // rappeler factory à chaque fois
-    // TODO:
-    // totalLikes et likes : mettre totallikes factory media (cf. plus haut), et pour gestion des likes : session storage
-    // (garde en mémoire, mais peut clear au chargement de page ?) ou alors modifier directement objet media dans tableau
-    // pour changer les likes, et update le total likes avec getTotalLikes qui le recalcule à chaque fois à l'affichage
-    // (mais c'est lourd, ou alors il est juste incrémenté ou décrémenté à chaque fois qu'on like ou dislike, comme ça
-    // simple, et si recharge page alors dans l'idée comme le calcul est fait au chargement ou création media factory il
-    // est à jour de toute façon). Likes media > update media likes dans tableau > update total likes (incrément) et affiche
-    // ou recalcul total likes et affiche
-    displayPhotographerMedia(photographerMedia);
-    let totalLikes = getTotalLikesFromMedia(photographerMedia);
-    displayPhotographerTotalLikes(totalLikes);
-    // TODO: TEMPS LOCAL DATA
-    localData.totalLikes = totalLikes;
-    // TODO: ajouter les event listener pour modal
-    const photographerContactButton = document.querySelector(".photographer-header__contact .contact-button");
-    photographerContactButton.addEventListener("click", () => displayModal(localData.photographer));
-    console.log(photographer);
-    console.log(photographerMedia);
-    console.log(totalLikes);
+function displayLightbox(media, mediaList) {
+    const lightbox = document.getElementById('media-lightbox');
+    if (lightbox !== null) {
+        updateLightbox(lightbox, media);
+        openModal(lightbox);
+    } else {
+        const pageMain = document.getElementById('main');
+        const lightboxHTML = getLightboxHTML(media);
+        pageMain.insertAdjacentHTML('afterend', lightboxHTML);
+        const newLightbox = document.getElementById('media-lightbox');
+        initLightbox(newLightbox, mediaList);
+        openModal(newLightbox);
+    }
 }
 
-// TODO: il faut qu'on stock localement des données : photographe (objet), media (tableau), totalLikes (nombre) (ou le mettre
-// dans media factory ou photographe, à voir cf. plus haut). Soit un objet local qui contient ces données.
-// Soit localSession storage pour stocker dans navigateur (objet en json stringify car que value string / ou pas,
-// doc sous-entend que conversion objet > string est automatique, à tester), ce sera effacé
-// en quittant fenêtre ? Ou event beforeunload / onunload pour le clear en quittant page (y compris retour arrière),
-// car dois gérer visiter plusieurs pages photographes à la suite sans mélanger donner ? Ou ne pas clear en quittant la
-// la page et recharger depuis session storage si existe déjà, mais demande de ne pas sauvegarder likes au refresh donc
-// pas le faire.
-const localData = {
-    photographer: null,
-    media: null,
-    totalLikes: null
+async function init() {
+    const photographerID = getURLPhotographerID();
+    const photographerData = await getPhotographerById(photographerID);
+    const photographer = photographerFactory(photographerData);
+    const photographerMedia = await photographer.getMedia();
+
+    await displayPhotographerData(photographer);
+    displayPhotographerMedia(photographerMedia, photographer);
+    const photographerContactButton = document.querySelector('.photographer-header__contact .contact-button');
+    photographerContactButton.addEventListener('click', () => displayModal(photographer));
+    console.log('init, photographer', photographer);
+    console.log('init, photographerMedia', photographerMedia);
+    // console.log(totalLikes);
 }
 
 init();
-console.log("localData", localData);

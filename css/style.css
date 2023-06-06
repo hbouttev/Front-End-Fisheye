@@ -1,5 +1,7 @@
 @import url("photographer.css");
 @import url("media.css");
+@import url("lightbox.css");
+@import url("select.css");
 
 html {
     /* Set border-box as the global default */
