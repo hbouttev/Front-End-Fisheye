@@ -32,7 +32,7 @@ function mediaFactory(data) {
     }
 
     const getMediaElementHTML = ({controls = true} = {}) => (`
-        <${image ? 'img' : 'video'} class="media-content" src=${mediaUrl} alt=${title} ${video && controls ? 'controls' : ''}>
+        <${image ? 'img' : 'video'} class="media-content" src="${mediaUrl}" alt="${title}" ${video && controls ? 'controls' : ''}>
         ${video ? '</video>' : ''}
     `);
 
@@ -43,8 +43,8 @@ function mediaFactory(data) {
             </div>
             <div class="media-card__info">
                 <h2 class="media-title">${title}</h2>
-                <p class="media-likes">
-                    <span class="media-likes__count" aria-label="${likes} likes">${likes}</span> <i class="fa-solid fa-heart media-likes__icon"></i>
+                <p class="media-likes" aria-label="${likes} likes">
+                    <span class="media-likes__count">${likes}</span> <i class="fa-solid fa-heart media-likes__icon" aria-label="likes"></i>
                 </p>
             </div>
         </article>

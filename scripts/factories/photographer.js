@@ -55,9 +55,9 @@ function photographerFactory(data) {
                     class="photographer-profile-picture photographer-profile-picture--card">
                 <h2 class="photographer-name photographer-name--card">${name}</h2>
             </a>
-            <p class="photographer-location photographer-location--card">${city}, ${country}</p>
-            <p class="photographer-tagline photographer-tagline--card">${tagline}</p>
-            <p class="photographer-price photographer-price--card">${price}€/jour</p>
+            <p class="photographer-location photographer-location--card" aria-label="Located in ${city} ${country}">${city}, ${country}</p>
+            <p class="photographer-tagline photographer-tagline--card" aria-label="My tagline is ${tagline}">${tagline}</p>
+            <p class="photographer-price photographer-price--card" aria-label="Price is ${price} per day">${price}€/jour</p>
         </article>
     `);
 
@@ -65,8 +65,8 @@ function photographerFactory(data) {
     const getUserPageHeaderHTML = () => (`
         <div class="photographer-header__profile" aria-label="About me">
             <h1 class="photographer-name">${name}</h1>
-            <p class="photographer-location">${city}, ${country}</p>
-            <p class="photographer-tagline">${tagline}</p>
+            <p class="photographer-location" aria-label="Located in ${city} ${country}">${city}, ${country}</p>
+            <p class="photographer-tagline" aria-label="My tagline is ${tagline}">${tagline}</p>
         </div>
         <div class="photographer-header__contact">
             <button class="contact-button" aria-label="Contact me">Contactez-moi</button>
@@ -79,7 +79,7 @@ function photographerFactory(data) {
 
     const getUserInsertDetailsHTML = async () => (`
         <div class="fixed-box__total-likes">
-            <p class="photographer-total-likes" aria-label="Total likes">
+            <p class="photographer-total-likes" aria-label="${await getTotalLikes()} total likes">
                 <span class="total-likes">${await getTotalLikes()}</span> <i class="fa-solid fa-heart media-likes__icon" aria-label="likes"></i>
             </p>
         </div>
